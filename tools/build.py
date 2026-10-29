@@ -19,8 +19,7 @@ SITE = {
     "role": "System Engineer / Full-Stack Developer",
 }
 
-# Derived so the wordmark and avatar initials can never drift from the brand name.
-SITE["initials"] = (SITE["name"][:1] + SITE["name"][1:2]).upper()
+# Derived so the wordmark can never drift from the brand name.
 SITE["wordmark_head"] = SITE["name"][:1]
 SITE["wordmark_tail"] = SITE["name"][1:]
 
@@ -741,7 +740,7 @@ def build_index():
     </div>
     <aside class="hero__panel" data-reveal>
       <div class="portrait">
-        <span class="portrait__initials" aria-hidden="true">%s</span>
+        <img class="portrait__photo" src="assets/img/avatar.jpg" width="460" height="460" alt="Foto profil %s" loading="lazy" decoding="async">
         <span class="portrait__scan" aria-hidden="true"></span>
       </div>
       <dl class="panel-rows">
@@ -801,7 +800,7 @@ def build_index():
         icon("file"),
         icon("boxes"),
         icon("mail"),
-        esc(SITE["initials"]),
+        esc(SITE["name"]),
         esc(SITE["location"]),
         stat_cards(),
         eco_cards,
