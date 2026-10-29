@@ -6,10 +6,15 @@
   var STORAGE_KEY = "antono-theme";
 
   /* ---- Theme ---- */
+  /* Keep these in step with the --background token in style.css: the browser
+     paints the address bar from this, so a mismatch shows as a visible seam. */
+  var THEME_COLOR = { dark: "#0f131a", light: "#f0f7f9" };
+
   function applyTheme(theme) {
     root.setAttribute("data-theme", theme);
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "light" ? "#eef6f8" : "#0b1116");
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+      meta.setAttribute("content", THEME_COLOR[theme] || THEME_COLOR.dark);
+    });
     document.querySelectorAll("[data-theme-toggle]").forEach(function (btn) {
       btn.setAttribute("aria-label", theme === "light" ? "Aktifkan tema gelap" : "Aktifkan tema terang");
     });
@@ -159,6 +164,9 @@
 
     function openDialog() {
       dialog.setAttribute("data-open", "true");
+      dialog.removeAttribute("inert");
+      /* style.css flips `visibility` to visible with no delay on open, so the
+         input is focusable synchronously - no rAF dance needed. */
       if (searchInput) {
         searchInput.value = "";
         renderResults("");
@@ -168,7 +176,17 @@
       }
     }
 
-    function closeDialog() { dialog.setAttribute("data-open", "false"); }
+    function closeDialog() {
+      dialog.setAttribute("data-open", "false");
+      /* Take the closed panel out of the tab order and the a11y tree. */
+      dialog.setAttribute("inert", "");
+      if (dialog.contains(document.activeElement) && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+    }
+
+    /* Start closed: the markup ships data-open="false", so mirror that here. */
+    closeDialog();
 
     document.querySelectorAll("[data-search-open]").forEach(function (btn) {
       btn.addEventListener("click", openDialog);

@@ -485,8 +485,7 @@ def head(title, description, page_slug):
 <meta name="description" content="%s">
 <meta name="robots" content="%s">
 <meta name="author" content="%s">
-<meta name="theme-color" content="#0b1116" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f131a">
 <meta name="generator" content="Antono static builder">
 <link rel="canonical" href="%s">
 <link rel="icon" href="data:image/svg+xml,%s">
@@ -515,6 +514,7 @@ def head(title, description, page_slug):
 <body>
 <a class="sr-only" href="#main">Lewati ke konten utama</a>
 <div class="atmosphere" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
 <div class="page">
 """ % (
         esc(title),
