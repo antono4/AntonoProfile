@@ -747,15 +747,14 @@ p, li { text-wrap: pretty; }
 
 /* ---------- 9. Cards ---------- */
 .grid { display: grid; gap: 1rem; }
-.grid--2 { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
-.grid--3 { grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
-.grid--4 { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); }
 
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
   padding: 1.4rem;
   border: 1px solid hsl(var(--border));
   border-radius: var(--radius);
