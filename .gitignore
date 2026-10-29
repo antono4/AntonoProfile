@@ -1,6 +1,14 @@
+# Agent / editor state
 .openhands/
 .agent_tmp/
+
+# OS + tooling noise
+.DS_Store
+Thumbs.db
+*.log
 __pycache__/
 *.pyc
-.DS_Store
-*.log
+
+# Local preview artefacts
+/node_modules/
+/screenshots/
