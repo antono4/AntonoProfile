@@ -1,4 +1,4 @@
-# Nexora — Personal Technology Ecosystem
+# Antono — Personal Technology Ecosystem
 
 A dark, atmospheric portfolio and project-catalog site: hero with animated gradient
 wordmark, ecosystem cards, category navigation, an updates feed, a filterable project
