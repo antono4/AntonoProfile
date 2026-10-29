@@ -2,9 +2,12 @@
 """Assemble the ANTONO static site from shared partials + page data.
 
 Run:  python3 tools/build.py
-Output: index.html, projects.html, blog.html, resume.html, contacts.html, 404.html
+Output: index.html, projects.html, blog.html, resume.html, contacts.html,
+        404.html, robots.txt, sitemap.xml, manifest.webmanifest
 """
+import datetime
 import html
+import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -17,6 +20,10 @@ SITE = {
     "email_project": "studio@antono.dev",
     "location": "Jakarta, Indonesia",
     "role": "System Engineer / Full-Stack Developer",
+    "url": "https://antono4.github.io/AntonoProfile",
+    "github": "https://github.com/antono4",
+    "og_image": "assets/img/og-cover.png",
+    "locale": "id_ID",
 }
 
 # Derived so the wordmark can never drift from the brand name.
@@ -420,6 +427,55 @@ SOCIALS = [
 # Layout
 # --------------------------------------------------------------------------
 def head(title, description, page_slug):
+    # 404 must never be indexed; every other page advertises a canonical URL so
+    # search engines do not treat the Pages host and any future domain as dupes.
+    canonical = "%s/%s" % (SITE["url"], "" if page_slug == "index.html" else page_slug)
+    robots = (
+        "noindex, follow"
+        if page_slug == "404.html"
+        else "index, follow, max-image-preview:large"
+    )
+    og_image = "%s/%s" % (SITE["url"], SITE["og_image"])
+    structured = json.dumps(
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "@id": "%s/#website" % SITE["url"],
+                    "url": "%s/" % SITE["url"],
+                    "name": SITE["name"],
+                    "description": SITE["tagline"],
+                    "inLanguage": "id-ID",
+                    "publisher": {"@id": "%s/#person" % SITE["url"]},
+                },
+                {
+                    "@type": "Person",
+                    "@id": "%s/#person" % SITE["url"],
+                    "name": SITE["owner"],
+                    "url": "%s/" % SITE["url"],
+                    "jobTitle": SITE["role"],
+                    "image": "%s/%s" % (SITE["url"], "assets/img/avatar.jpg"),
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": SITE["location"],
+                    },
+                    "sameAs": [SITE["github"]],
+                },
+                {
+                    "@type": "WebPage",
+                    "@id": canonical,
+                    "url": canonical,
+                    "name": title,
+                    "description": description,
+                    "isPartOf": {"@id": "%s/#website" % SITE["url"]},
+                    "inLanguage": "id-ID",
+                },
+            ],
+        },
+        ensure_ascii=False,
+        separators=(",", ":"),
+    ).replace("</", "<\\/")  # cannot close the surrounding <script> tag
     return """<!DOCTYPE html>
 <html lang="id" data-theme="dark">
 <head>
@@ -427,13 +483,34 @@ def head(title, description, page_slug):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>%s</title>
 <meta name="description" content="%s">
-<meta name="theme-color" content="#0b1116">
+<meta name="robots" content="%s">
+<meta name="author" content="%s">
+<meta name="theme-color" content="#0b1116" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
 <meta name="generator" content="Antono static builder">
+<link rel="canonical" href="%s">
 <link rel="icon" href="data:image/svg+xml,%s">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="%s">
+<meta property="og:locale" content="%s">
+<meta property="og:title" content="%s">
+<meta property="og:description" content="%s">
+<meta property="og:url" content="%s">
+<meta property="og:image" content="%s">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="%s">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="%s">
+<meta name="twitter:description" content="%s">
+<meta name="twitter:image" content="%s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/css/style.css">
+<script type="application/ld+json">%s</script>
 </head>
 <body>
 <a class="sr-only" href="#main">Lewati ke konten utama</a>
@@ -442,7 +519,21 @@ def head(title, description, page_slug):
 """ % (
         esc(title),
         esc(description),
+        robots,
+        esc(SITE["owner"]),
+        esc(canonical),
         "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1116'/%3E%3Cpath d='M10 22V10l12 12V10' stroke='%232dd4bf' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+        esc(SITE["name"]),
+        esc(SITE["locale"]),
+        esc(title),
+        esc(description),
+        esc(canonical),
+        esc(og_image),
+        esc("%s - %s" % (SITE["name"], SITE["tagline"])),
+        esc(title),
+        esc(description),
+        esc(og_image),
+        structured,
     )
 
 
@@ -1118,6 +1209,77 @@ def build_404():
     return page
 
 
+def build_robots():
+    return "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % SITE["url"]
+
+
+def build_sitemap():
+    # 404 is excluded: it is noindex, and listing it invites crawlers to fetch it.
+    today = datetime.date.today().isoformat()
+    urls = []
+    for filename in PAGES:
+        if filename == "404.html":
+            continue
+        loc = "%s/%s" % (SITE["url"], "" if filename == "index.html" else filename)
+        priority = "1.0" if filename == "index.html" else "0.7"
+        urls.append(
+            "  <url>\n"
+            "    <loc>%s</loc>\n"
+            "    <lastmod>%s</lastmod>\n"
+            "    <changefreq>weekly</changefreq>\n"
+            "    <priority>%s</priority>\n"
+            "  </url>" % (esc(loc), today, priority)
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls)
+        + "\n</urlset>\n"
+    )
+
+
+def build_manifest():
+    return (
+        json.dumps(
+            {
+                "name": "%s - %s" % (SITE["name"], SITE["tagline"]),
+                "short_name": SITE["name"],
+                "description": SITE["tagline"],
+                "lang": "id",
+                "dir": "ltr",
+                "start_url": "./",
+                "scope": "./",
+                "display": "standalone",
+                "background_color": "#0b1116",
+                "theme_color": "#0b1116",
+                "icons": [
+                    {
+                        "src": "assets/img/icon-192.png",
+                        "sizes": "192x192",
+                        "type": "image/png",
+                        "purpose": "any",
+                    },
+                    {
+                        "src": "assets/img/icon-512.png",
+                        "sizes": "512x512",
+                        "type": "image/png",
+                        "purpose": "any",
+                    },
+                    {
+                        "src": "assets/img/icon-maskable-512.png",
+                        "sizes": "512x512",
+                        "type": "image/png",
+                        "purpose": "maskable",
+                    },
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n"
+    )
+
+
 PAGES = {
     "index.html": build_index,
     "projects.html": build_projects,
@@ -1130,6 +1292,14 @@ PAGES = {
 
 def main():
     for filename, builder in PAGES.items():
+        (ROOT / filename).write_text(builder(), encoding="utf-8")
+        print("wrote", filename)
+    # Generated from the same PAGES map as the HTML so the two cannot drift.
+    for filename, builder in (
+        ("robots.txt", build_robots),
+        ("sitemap.xml", build_sitemap),
+        ("manifest.webmanifest", build_manifest),
+    ):
         (ROOT / filename).write_text(builder(), encoding="utf-8")
         print("wrote", filename)
 

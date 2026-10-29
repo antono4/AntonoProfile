@@ -16,17 +16,38 @@ resume.html       Experience, education, skills, tech stack
 contacts.html     Contact channels + client-side message form
 404.html          Not-found page
 
+robots.txt             Crawler rules + sitemap pointer
+sitemap.xml            Page list for search engines
+manifest.webmanifest   Installable-app metadata (PWA)
+
 assets/css/style.css   Design tokens + all components (single stylesheet)
 assets/js/main.js      Theme toggle, nav, scroll reveal, counters, filters, search palette
-tools/build.py         Regenerates every page from shared partials + content data
+assets/img/            Profile photo, social card, app icons
+
+tools/build.py         Regenerates every page + robots/sitemap/manifest
+tools/make_assets.py   Regenerates the raster images (optional, needs Pillow)
 ```
 
 ## Regenerating the pages
 
-The HTML files are generated. Edit content or templates in `tools/build.py`, then:
+The HTML, `robots.txt`, `sitemap.xml`, and `manifest.webmanifest` are generated. Edit
+content or templates in `tools/build.py`, then:
 
 ```bash
 python3 tools/build.py
+```
+
+The site's address lives in `SITE["url"]`. Change it there and the canonical links,
+Open Graph URLs, sitemap entries, and robots pointer all follow — nothing is
+duplicated by hand.
+
+## Regenerating the images
+
+Only needed if you change the design or replace the artwork. Requires Pillow and the
+Sora/Manrope fonts (see the docstring in the script for the download commands):
+
+```bash
+python3 tools/make_assets.py
 ```
 
 ## Viewing locally
