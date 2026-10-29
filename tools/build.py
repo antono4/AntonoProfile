@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble the NEXORA static site from shared partials + page data.
+"""Assemble the ANTONO static site from shared partials + page data.
 
 Run:  python3 tools/build.py
 Output: index.html, projects.html, blog.html, resume.html, contacts.html, 404.html
@@ -10,14 +10,19 @@ import pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 SITE = {
-    "name": "Nexora",
+    "name": "Antono",
     "tagline": "Ekosistem teknologi personal",
-    "owner": "Nexora",
-    "email_work": "halo@nexora.dev",
-    "email_project": "studio@nexora.dev",
+    "owner": "Antono",
+    "email_work": "halo@antono.dev",
+    "email_project": "studio@antono.dev",
     "location": "Jakarta, Indonesia",
     "role": "System Engineer / Full-Stack Developer",
 }
+
+# Derived so the wordmark and avatar initials can never drift from the brand name.
+SITE["initials"] = (SITE["name"][:1] + SITE["name"][1:2]).upper()
+SITE["wordmark_head"] = SITE["name"][:1]
+SITE["wordmark_tail"] = SITE["name"][1:]
 
 # --------------------------------------------------------------------------
 # Icons (lucide-style, 24x24 stroke geometry)
@@ -108,8 +113,8 @@ ECOSYSTEMS = [
         "tags": ["distributed", "automation", "iot"],
     },
     {
-        "key": "nexora-core",
-        "name": "Nexora Core",
+        "key": "antono-core",
+        "name": "Antono Core",
         "icon": "layers",
         "desc": "Hub merek personal, produk, eksperimen, dan infrastruktur. Menyatukan reverse engineering dan arah rekayasa dalam satu tempat.",
         "projects": 8,
@@ -118,7 +123,7 @@ ECOSYSTEMS = [
     },
     {
         "key": "templates",
-        "name": "Nexora Templates",
+        "name": "Antono Templates",
         "icon": "boxes",
         "desc": "Template proyek dan starter kit untuk mempercepat pengembangan: boilerplate frontend, kerangka layanan, dan konfigurasi CI.",
         "projects": 6,
@@ -127,7 +132,7 @@ ECOSYSTEMS = [
     },
     {
         "key": "tools",
-        "name": "Nexora Tools",
+        "name": "Antono Tools",
         "icon": "wrench",
         "desc": "Alat, utilitas, dan repositori rekayasa yang dipakai sehari-hari: CLI internal, generator, dan perkakas pengujian.",
         "projects": 5,
@@ -136,7 +141,7 @@ ECOSYSTEMS = [
     },
     {
         "key": "docs",
-        "name": "Nexora Docs",
+        "name": "Antono Docs",
         "icon": "book",
         "desc": "Koleksi portal pengetahuan, dokumentasi, dan buku referensi yang disusun ulang agar mudah dicari dan dikutip.",
         "projects": 4,
@@ -191,7 +196,7 @@ PROJECTS = [
     {
         "slug": "localization-toolkit",
         "name": "Localization Toolkit",
-        "eco": "Nexora Tools",
+        "eco": "Antono Tools",
         "icon": "wrench",
         "desc": "Perangkat lokalisasi .resx: editor GUI, contoh aplikasi, dan ekstensi Visual Studio untuk alur kerja terjemahan.",
         "stack": ["C#", "WPF", "VSIX"],
@@ -203,7 +208,7 @@ PROJECTS = [
     {
         "slug": "knowledge-atlas",
         "name": "Knowledge Atlas",
-        "eco": "Nexora Docs",
+        "eco": "Antono Docs",
         "icon": "book",
         "desc": "Portal pencarian untuk catatan, dokumen, dan referensi dengan pengindeksan penuh dan kutipan tautan permanen.",
         "stack": ["Go", "SQLite FTS5", "HTMX"],
@@ -215,7 +220,7 @@ PROJECTS = [
     {
         "slug": "starter-forge",
         "name": "Starter Forge",
-        "eco": "Nexora Templates",
+        "eco": "Antono Templates",
         "icon": "rocket",
         "desc": "Generator proyek dengan template frontend, layanan backend, dan pipeline CI siap pakai dalam satu perintah.",
         "stack": ["Node.js", "Plop", "GitHub Actions"],
@@ -239,7 +244,7 @@ PROJECTS = [
     {
         "slug": "vault-audit",
         "name": "Vault Audit",
-        "eco": "Nexora Tools",
+        "eco": "Antono Tools",
         "icon": "shield",
         "desc": "Pemindai konfigurasi untuk menemukan rahasia yang bocor dan kebijakan akses yang longgar pada repositori.",
         "stack": ["Go", "Rego", "Docker"],
@@ -269,7 +274,7 @@ UPDATES = [
         "source": "Portal",
         "title": "Production AI Systems 2026: membangun platform RAG + AI Agents yang benar-benar berjalan",
         "text": "Panduan rekayasa praktis untuk RAG produksi, AI agents, tool calling, structured output, MCP, keamanan, observability, dan evaluasi.",
-        "eco": "Nexora Core",
+        "eco": "Antono Core",
         "tags": ["article", "ai", "featured"],
     },
     {
@@ -278,7 +283,7 @@ UPDATES = [
         "source": "Portal",
         "title": "Katalog awal diperluas",
         "text": "Data awal diisi dengan situs nyata, portal pengetahuan, alat, repositori, dan organisasi.",
-        "eco": "Nexora Core",
+        "eco": "Antono Core",
         "tags": ["changelog", "featured"],
     },
     {
@@ -287,7 +292,7 @@ UPDATES = [
         "source": "Portal",
         "title": "Proyek awal ditambahkan",
         "text": "Katalog mendapat kerangka pertama untuk pengisian berikutnya.",
-        "eco": "Nexora Core",
+        "eco": "Antono Core",
         "tags": ["changelog"],
     },
     {
@@ -296,7 +301,7 @@ UPDATES = [
         "source": "Portal",
         "title": "Peluncuran",
         "text": "Fondasi katalog proyek dan panel admin dibuat.",
-        "eco": "Nexora Core",
+        "eco": "Antono Core",
         "tags": ["news"],
     },
     {
@@ -314,7 +319,7 @@ UPDATES = [
         "source": "GitHub",
         "title": "v1.0.5 - Localization Toolkit",
         "text": "Rilis ini memperbarui paket NuGet dan menambahkan build baru untuk Visual Studio 2022.",
-        "eco": "Nexora Tools",
+        "eco": "Antono Tools",
         "tags": ["release", "developer-tools"],
     },
     {
@@ -323,7 +328,7 @@ UPDATES = [
         "source": "GitHub",
         "title": "v1.0.4 - Localization Toolkit",
         "text": "Menyertakan paket NuGet yang diperbarui dan VSIX baru untuk Visual Studio 2022.",
-        "eco": "Nexora Tools",
+        "eco": "Antono Tools",
         "tags": ["release", "developer-tools"],
     },
     {
@@ -332,7 +337,7 @@ UPDATES = [
         "source": "GitHub",
         "title": "v1.0.3 - Localization Toolkit",
         "text": "Rilis untuk lokalisasi .resx: editor GUI, contoh aplikasi, dan ekstensi VSIX.",
-        "eco": "Nexora Tools",
+        "eco": "Antono Tools",
         "tags": ["release", "developer-tools"],
     },
     {
@@ -350,7 +355,7 @@ EXPERIENCE = [
     {
         "period": "2023 - Sekarang",
         "role": "Lead System Engineer",
-        "org": "Nexora Studio",
+        "org": "Antono Studio",
         "desc": "Memimpin arsitektur platform terdistribusi Unifier: perancangan protokol, model klaster, dan observability end-to-end. Menurunkan latensi p99 sebesar 43%.",
     },
     {
@@ -394,21 +399,21 @@ EDUCATION = [
 ]
 
 CONTACTS = [
-    ("mail", "Email Kerja", "halo@nexora.dev", "mailto:halo@nexora.dev"),
-    ("mail", "Email Proyek", "studio@nexora.dev", "mailto:studio@nexora.dev"),
-    ("github", "GitHub", "github.com/nexora-dev", "https://github.com"),
-    ("gitlab", "GitLab", "gitlab.com/nexora-dev", "https://gitlab.com"),
-    ("linkedin", "LinkedIn", "linkedin.com/in/nexora", "https://www.linkedin.com"),
+    ("mail", "Email Kerja", "halo@antono.dev", "mailto:halo@antono.dev"),
+    ("mail", "Email Proyek", "studio@antono.dev", "mailto:studio@antono.dev"),
+    ("github", "GitHub", "github.com/antono4", "https://github.com"),
+    ("gitlab", "GitLab", "gitlab.com/antono4", "https://gitlab.com"),
+    ("linkedin", "LinkedIn", "linkedin.com/in/antono", "https://www.linkedin.com"),
     ("map", "Lokasi", "Jakarta, Indonesia", "#"),
     ("phone", "Telepon", "+62 812 0000 0000", "tel:+6281200000000"),
-    ("globe", "Situs", "nexora.dev", "https://nexora.dev"),
+    ("globe", "Situs", "antono.dev", "https://antono.dev"),
 ]
 
 SOCIALS = [
     ("github", "GitHub", "https://github.com"),
     ("gitlab", "GitLab", "https://gitlab.com"),
     ("linkedin", "LinkedIn", "https://www.linkedin.com"),
-    ("mail", "Email", "mailto:halo@nexora.dev"),
+    ("mail", "Email", "mailto:halo@antono.dev"),
 ]
 
 
@@ -424,7 +429,7 @@ def head(title, description, page_slug):
 <title>%s</title>
 <meta name="description" content="%s">
 <meta name="theme-color" content="#0b1116">
-<meta name="generator" content="Nexora static builder">
+<meta name="generator" content="Antono static builder">
 <link rel="icon" href="data:image/svg+xml,%s">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -705,7 +710,7 @@ def build_index():
     cat_cards = "".join(category_card(c) for c in CATEGORIES)
     feed = "".join(feed_item(u) for u in UPDATES[:6])
     page = head(
-        "Nexora - Ekosistem teknologi personal",
+        "Antono - Ekosistem teknologi personal",
         "Ekosistem produk, alat, portal pengetahuan, dan sistem rekayasa. Proyek open source, catatan teknis, dan pengalaman rekayasa.",
         "index.html",
     )
@@ -717,7 +722,7 @@ def build_index():
   <div class="hero__plaques" aria-hidden="true">%s</div>
   <div class="shell hero__grid">
     <div class="hero__copy">
-      <h1 class="wordmark"><span class="wordmark__letter" aria-hidden="true">N</span><span class="sr-only">N</span><span>exora</span></h1>
+      <h1 class="wordmark"><span class="wordmark__letter" aria-hidden="true">%s</span><span class="sr-only">%s</span><span>%s</span></h1>
       <div class="hero__signal">
         <p class="hero__signal-title"><span class="signal-dot" aria-hidden="true"></span>Ekosistem teknologi personal</p>
       </div>
@@ -736,7 +741,7 @@ def build_index():
     </div>
     <aside class="hero__panel" data-reveal>
       <div class="portrait">
-        <span class="portrait__initials" aria-hidden="true">NX</span>
+        <span class="portrait__initials" aria-hidden="true">%s</span>
         <span class="portrait__scan" aria-hidden="true"></span>
       </div>
       <dl class="panel-rows">
@@ -787,12 +792,16 @@ def build_index():
 </main>
 """ % (
         hero_plaques(),
+        esc(SITE["wordmark_head"]),
+        esc(SITE["wordmark_head"]),
+        esc(SITE["wordmark_tail"]),
         icon("cpu"),
         icon("code"),
         icon("sparkles"),
         icon("file"),
         icon("boxes"),
         icon("mail"),
+        esc(SITE["initials"]),
         esc(SITE["location"]),
         stat_cards(),
         eco_cards,
@@ -815,7 +824,7 @@ def build_projects():
             % (value, esc(label))
         )
     page = head(
-        "Proyek - Nexora",
+        "Proyek - Antono",
         "Katalog proyek: platform terdistribusi, alat developer, portal pengetahuan, dan eksperimen rekayasa.",
         "projects.html",
     )
@@ -854,7 +863,7 @@ def build_blog():
             % (value, esc(label))
         )
     page = head(
-        "Blog dan pembaruan - Nexora",
+        "Blog dan pembaruan - Antono",
         "Catatan teknis, pembaruan rilis, video, dan changelog dari seluruh ekosistem.",
         "blog.html",
     )
@@ -917,7 +926,7 @@ def build_resume():
         for title, items in STACK
     )
     page = head(
-        "Resume - Nexora",
+        "Resume - Antono",
         "Pengalaman, keterampilan, teknologi, dan pendidikan. Resume ringkas seorang system engineer dan full-stack developer.",
         "resume.html",
     )
@@ -1009,7 +1018,7 @@ def build_contacts():
         for ico, label, value, url in CONTACTS
     )
     page = head(
-        "Kontak - Nexora",
+        "Kontak - Antono",
         "Hubungi melalui email, GitHub, GitLab, atau LinkedIn. Terbuka untuk kolaborasi proyek dan konsultasi rekayasa.",
         "contacts.html",
     )
@@ -1090,7 +1099,7 @@ def build_contacts():
 
 
 def build_404():
-    page = head("Halaman tidak ditemukan - Nexora", "Halaman yang Anda cari tidak ditemukan.", "404.html")
+    page = head("Halaman tidak ditemukan - Antono", "Halaman yang Anda cari tidak ditemukan.", "404.html")
     page += header("")
     page += """<main id="main">
 <section class="section">

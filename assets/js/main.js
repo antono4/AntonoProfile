@@ -1,9 +1,9 @@
-/* NEXORA - shared behaviour: theme, nav, reveal, counters, card glow, search. */
+/* ANTONO - shared behaviour: theme, nav, reveal, counters, card glow, search. */
 (function () {
   "use strict";
 
   var root = document.documentElement;
-  var STORAGE_KEY = "nexora-theme";
+  var STORAGE_KEY = "antono-theme";
 
   /* ---- Theme ---- */
   function applyTheme(theme) {
